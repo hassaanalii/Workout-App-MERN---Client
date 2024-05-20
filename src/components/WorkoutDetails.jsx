@@ -2,20 +2,20 @@ import { useContext, useState } from "react"
 import { WorkoutContext } from "../contexts/WorkoutContext"
 import EditModal from "./editmodal/EditModal"
 
-const WorkoutDetails = ({workout}) => {
+const WorkoutDetails = ({ workout }) => {
     const [showModal, isModalShown] = useState(false)
 
-    const {fetchWorkoutData} = useContext(WorkoutContext)
+    const { fetchWorkoutData } = useContext(WorkoutContext)
 
-    const editClick = () =>{
+    const editClick = () => {
         isModalShown(!showModal)
     }
 
     const close = () => {
         isModalShown(false)
     }
-    const clickDelete = async() =>{
-        const response = await fetch(`http://localhost:4000/api/workouts/${workout._id}`,{
+    const clickDelete = async () => {
+        const response = await fetch(`http://localhost:4000/api/workouts/${workout._id}`, {
             method: 'DELETE',
         })
         fetchWorkoutData()
@@ -23,23 +23,28 @@ const WorkoutDetails = ({workout}) => {
 
     }
 
-    return(
-       <div className="workout-details">
-        <h4>{workout.title}</h4>
-        <p><strong>Load (kg): </strong> {workout.load}</p>
-        <p><strong>Reps: </strong> {workout.reps}</p>
-        <p>{workout.createdAt}</p>
-        <div className="flex gap-3">
-        <p onClick={clickDelete}>Delete</p>
-        <p onClick={editClick}>Edit</p>
-        </div>
-        {
-            showModal && (
-                <EditModal workout={workout} onClose={close} />
-            )
-        }
+    const imageUrl = workout.photoUrl ? workout.photoUrl.replace(/\\/g, "/") : "";
 
-       </div>
+
+    return (
+        <div className="workout-details">
+            <h4>{workout.title}</h4>
+            <p><strong>Load (kg): </strong> {workout.load}</p>
+            <p><strong>Reps: </strong> {workout.reps}</p>
+            <p>{workout.createdAt}</p>
+            <div className="flex gap-3">
+                <p onClick={clickDelete}>Delete</p>
+                <p onClick={editClick}>Edit</p>
+            </div>
+            {workout.photoUrl && <img src={`http://localhost:4000/${imageUrl}`} alt="Workout" style={{ width: "100px", height: "100px" }} />}
+
+            {
+                showModal && (
+                    <EditModal workout={workout} onClose={close} />
+                )
+            }
+
+        </div>
     )
 }
 export default WorkoutDetails;

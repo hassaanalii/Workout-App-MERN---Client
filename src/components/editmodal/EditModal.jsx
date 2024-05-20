@@ -7,23 +7,25 @@ const EditModal = ({ workout, onClose }) => {
     const [title, setTitle] = useState(workout.title)
     const [load, setLoad] = useState(workout.load)
     const [reps, setReps] = useState(workout.reps)
-    const {fetchWorkoutData} = useContext(WorkoutContext)
+    const [photo, setPhoto] = useState(null);
 
-    const onUpdate = async() => {
-        try{
-            const res = await updateWorkout(workout._id, title, load, reps)
+    const { fetchWorkoutData } = useContext(WorkoutContext)
+
+    const onUpdate = async (e) => {
+        e.preventDefault()
+        try {
+            const res = await updateWorkout(workout._id, title, load, reps, photo)
             console.log(res)
-        }catch(error){
+        } catch (error) {
             console.log(error)
-        }finally{
+        } finally {
             onClose()
             fetchWorkoutData()
-            
         }
-
-
-        
     }
+
+    const imageUrl = workout.photoUrl ? workout.photoUrl.replace(/\\/g, "/") : "";
+
     return (
         <div className="modal-overlay">
             <div className="modal-content">
@@ -46,6 +48,19 @@ const EditModal = ({ workout, onClose }) => {
                     type="number"
                     onChange={(e) => setReps(e.target.value)}
                     value={reps}
+                />
+
+                {workout.photoUrl && (
+                    <div>
+                        <label>Current Photo:</label>
+                        <img src={`http://localhost:4000/${imageUrl}`} alt="Workout" style={{ width: "200px", height: "200px" }} />
+                    </div>
+                )}
+
+                <label>Update Photo:</label>
+                <input
+                    type="file"
+                    onChange={(e) => setPhoto(e.target.files[0])}
                 />
                 <button onClick={onUpdate}>Update</button>
                 <button onClick={onClose}>Close</button>
