@@ -1,10 +1,12 @@
-import { useState } from 'react'
+import { useContext, useState } from 'react'
+import { WorkoutContext } from '../contexts/WorkoutContext'
 
-const WorkoutForm = ({workouts, setWorkouts}) => {
+const WorkoutForm = () => {
   const [title, setTitle] = useState('')
   const [load, setLoad] = useState('')
   const [reps, setReps] = useState('')
   const [error, setError] = useState(null)
+  const {fetchWorkoutData} =  useContext(WorkoutContext)
 
   const handleSubmit = async (e) => {
     e.preventDefault()
@@ -28,7 +30,7 @@ const WorkoutForm = ({workouts, setWorkouts}) => {
       setTitle('')
       setLoad('')
       setReps('')
-      setWorkouts([json, ...workouts])
+      fetchWorkoutData()
 
       console.log('new workout added:', json)
     }

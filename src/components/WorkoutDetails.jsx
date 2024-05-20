@@ -1,14 +1,17 @@
-const WorkoutDetails = ({workout, workouts, setWorkouts}) => {
+import { useContext } from "react"
+import { WorkoutContext } from "../contexts/WorkoutContext"
+
+const WorkoutDetails = ({workout}) => {
+
+    const {fetchWorkoutData} = useContext(WorkoutContext)
 
     const clickDelete = async() =>{
         const response = await fetch(`http://localhost:4000/api/workouts/${workout._id}`,{
             method: 'DELETE',
         })
+        fetchWorkoutData()
         const json = response.json()
 
-        if (response.ok){
-            setWorkouts(workouts.filter((w)=> w._id !== workout._id))
-        }
     }
 
     return(
