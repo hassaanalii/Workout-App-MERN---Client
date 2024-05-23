@@ -7,6 +7,7 @@ const WorkoutForm = () => {
   const [reps, setReps] = useState('')
   const [error, setError] = useState(null)
   const [photo, setPhoto] = useState(null);
+  const token = localStorage.getItem('token')
   const { fetchWorkoutData } = useContext(WorkoutContext)
 
   const handleSubmit = async (e) => {
@@ -47,9 +48,14 @@ const WorkoutForm = () => {
 
     const response = await fetch('http://localhost:4000/api/workouts', {
       method: 'POST',
+      headers: { 
+        authorization: 'Bearer ' + token
+      },
       body: formData,
+
     });
     const json = await response.json();
+    console.log(json);
 
     if (!response.ok) {
       setError(json.error);
