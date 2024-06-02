@@ -14,6 +14,7 @@ const EditModal = ({ workout, onClose }) => {
     const onUpdate = async (e) => {
         e.preventDefault()
         try {
+            console.log("hello")
             const res = await updateWorkout(workout._id, title, load, reps, photo)
             console.log(res)
         } catch (error) {

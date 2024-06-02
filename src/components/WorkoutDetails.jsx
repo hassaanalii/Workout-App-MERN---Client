@@ -4,7 +4,7 @@ import EditModal from "./editmodal/EditModal"
 
 const WorkoutDetails = ({ workout }) => {
     const [showModal, isModalShown] = useState(false)
-
+    const token = localStorage.getItem("token");
     const { fetchWorkoutData } = useContext(WorkoutContext)
 
     const editClick = () => {
@@ -17,6 +17,9 @@ const WorkoutDetails = ({ workout }) => {
     const clickDelete = async () => {
         const response = await fetch(`http://localhost:4000/api/workouts/${workout._id}`, {
             method: 'DELETE',
+            headers: { 'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + token }
+            
         })
         fetchWorkoutData()
         const json = response.json()

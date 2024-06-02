@@ -23,6 +23,7 @@
 
 
 export const updateWorkout = async (id, title, load, reps, photo) => {
+    const token = localStorage.getItem('token')
     const formData = new FormData();
     formData.append('title', title);
     formData.append('load', load);
@@ -35,6 +36,9 @@ export const updateWorkout = async (id, title, load, reps, photo) => {
         const res = await fetch(`http://localhost:4000/api/workouts/${id}`, {
             method: 'PATCH',
             body: formData,
+            headers: { 
+                'Authorization': 'Bearer ' + token }
+            
         });
         const json = await res.json();
 

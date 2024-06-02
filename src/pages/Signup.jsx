@@ -10,10 +10,12 @@ const Signup = () => {
 
     const onSubmit = async(event) => {
         event.preventDefault()
-        const response = await registerUser(name, email, password) 
-        console.log(response)
-        localStorage.setItem("token", response.token)
-        navigate("/")
+        const response = await registerUser(name, email, password)
+        if(response.success) {
+            // localStorage.setItem("token", response.token)
+            navigate("/login")
+        }
+       
     }
     return (
         <div>

@@ -10,9 +10,11 @@ const Login = () =>{
     const onSubmit = async(event) => {
         event.preventDefault()
         const response = await loginUser(email, password) 
-        console.log(response)
-        localStorage.setItem("token", response.token)
-        navigate("/")
+        if(response.success) {
+            localStorage.setItem("token", response.token)
+            navigate("/")
+        }
+        
 
 
     }
